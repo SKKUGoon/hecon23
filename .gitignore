@@ -1,0 +1,7 @@
+# Python files
+*__pycache__*
+
+# Confidential files
+*.csv
+*.xlsx
+*.zip
