@@ -48,36 +48,44 @@ Original user's result should be
   - Python ensures better performance than `R`.
   - Compatibility with `scikit-learn` package, `pytorch` 등 다양한 라이브러리 사용 가능.
 
-## 연구 결과 복제 하는 법
+## 연구 결과 복제 시도
 
 ### Step 0. Installation
 
 1. Git을 이용해서 해당 코드 및 데이터파일을 가지고 온다. `asset` 폴더 만든 후, EDI, 및 물류 csv 파일 삽입. 
 2. Python 설정 환경: `requirements.txt` 안의 pip 파일들 모두 설치 (`pyenv` 사용 권장)
+   ```bash
+   pip install -r requirements.txt
+   ```
 3. MySQL 설정 환경: `macOS`의 경우, `homebrew`를 이용하여 `mysql`설치. 윈도우의 경우, mysqlworkbench를 이용하여 설치 권장. 
-  - 대부분의 data storage 및 processing 은 mysql을 이용하여 이루어질 것이기 때문에 필수. 
+   - 대부분의 data storage 및 processing 은 mysql을 이용하여 이루어질 것이기 때문에 필수. 
 
 ### Step 1. Preprocessing
 
 사용파일: `./data_lake.py`
 
 1. SQL 안에 테이블들을 만든다. (사용 함수: `builder.create_table`, `builder.create_index`)
-2. EDI, 물류_DX, OP, PT csv 파일에서 정리된 데이터를 업로드한다. (사용 함수: `builder.create_data`)
-3. 기존 연구자가 수행한 프로세스 사용
-  - Add Ts series: 
-    * DX, OP, PT 의 날짜들 (YYYY-MM-DD)를 모두 포괄하는 dt (날짜) 테이블을 생성한후, Foreign key 를 이용해서 이어준다. (사용 함수: `builder.send_raw`)
+
+    <img src="./asset/database.png" alt="database_schema" width="300"></img>
+
+3. EDI, 물류_DX, OP, PT csv 파일에서 정리된 데이터를 업로드한다. (사용 함수: `builder.create_data`)
+3. 기존 연구자가 수행한 프로세스 일부 사용
+   - Add Ts series: DX, OP, PT 의 날짜들 (YYYY-MM-DD)를 모두 포괄하는 dt (날짜) 테이블을 생성한후, Foreign key 를 이용해서 이어준다. (사용 함수: `builder.send_raw`)
+
+### Step 2. Data Cleaning
+
+사용파일: `present.ipynb`
+
+1. 기존 연구자가 수행한 프로세스 사용
   - Remove duplicates:
-    * blah
+    * `present.ipynb` 참조. 중복 제거된 것 없음.
   - Exclude data points:
-    * Zero inflation: Remove if '0' populates more than 90% of the time series. 
+    * Zero inflation: Remove if '0' populates more than 90% of the time series.
+    * `present.ipynb` 참조. 제거된 시계열 없음.
   - Reducing Variables with PCA
+    * ...
 
-사용파일: 
-
-1. 기존 분석자가 수행한 Remove duplicates, Exclude data points, Reducing Variables with PCA, Add ts series 수행.
-  - Add ts series: date, month, and day 를 나눠서 Column 형성. 
-
-### Step 2. Replicate Distance Calc
+### Step 3. Replicate Distance Calc
 
 [Original paper for distance calculation](http://www.cs.columbia.edu/~gravano/Papers/2015/sigmod2015.pdf) 에서 연구자가 참고문헌으로 사용한 논문 찾을 수 있음. 
 [Github Repository](https://github.com/asardaes/dtwclust/blob/master/R/DISTANCES-sbd.R)는 참고문헌에 나온 SBD(Shape Based Distance)를 R로 재현함.
@@ -95,7 +103,7 @@ Original user's result should be
 `2` 는 연구자가 제시한`cc_distance` 함수의 core 부분을 재현함. 연구자에 따르면 `cc_distance(data)` 은 `(n * n)` Matrix of distance 를 생성함. 
 이때 data는 `(n * p)` data matrix 사용. (where `n` denotes the number of time frame and `p` denotes the number of time series sequence.) 
 
-### Step 3.
+### Step 4.
 
 
-### Step 4. 
+### Step 5. 
