@@ -77,8 +77,21 @@ Original user's result should be
 1. 기존 분석자가 수행한 Remove duplicates, Exclude data points, Reducing Variables with PCA, Add ts series 수행.
   - Add ts series: date, month, and day 를 나눠서 Column 형성. 
 
-## Step 2.
+## Step 2. Replicate Distance Calc
 
+The original paper for distance calculation can be found [here](http://www.cs.columbia.edu/~gravano/Papers/2015/sigmod2015.pdf). 
+Also the github link that has the original source code can be found [here](https://github.com/asardaes/dtwclust/tree/master/R).
+In the github repository, [this file](https://github.com/asardaes/dtwclust/blob/master/R/DISTANCES-sbd.R) replicates the aformentioned paper.
+With the paper and github repository, `./mod/distance` replicates the essential part of the calculation, which is
+
+1. Function that calculates NCC (Normalized Cross Correletion) sequcne
+2. Function that calculates Shape Based Distance with NCC.
+
+Essentially `1` replicates the original work's function of `cc_maker(ts1, ts2, w)`. 
+`w` is time lag. If `w` is negative, `ts1` is padded with `0` and vice-versa.
+
+`2` replicates the inner part of `cc_distance`. `cc_distance` Creates a `(n * n)` Matrix of distance 
+with `(n * p)` data matrix, where `n` denotes the number of time frame and `p` denotes the number of time series sequence. 
 
 ## Step 3.
 
