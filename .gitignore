@@ -1,3 +1,7 @@
+# Pycharm files
+./.idea
+*.idea
+
 # Python files
 *__pycache__*
 
@@ -5,3 +9,6 @@
 *.csv
 *.xlsx
 *.zip
+
+# Log files
+*.log
