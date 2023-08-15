@@ -55,6 +55,7 @@ Original user's result should be
 1. Git을 이용해서 해당 코드 및 데이터파일을 가지고 온다. `asset` 폴더 만든 후, EDI, 및 물류 csv 파일 삽입. 
 2. Python 설정 환경: `requirements.txt` 안의 pip 파일들 모두 설치 (`pyenv` 사용 권장)
    ```bash
+   pip install -U scikit-learn
    pip install -r requirements.txt
    ```
 3. MySQL 설정 환경: `macOS`의 경우, `homebrew`를 이용하여 `mysql`설치. 윈도우의 경우, mysqlworkbench를 이용하여 설치 권장. 
@@ -76,14 +77,21 @@ Original user's result should be
 
 사용파일: `present.ipynb`
 
-1. 기존 연구자가 수행한 프로세스 사용
+* 기존 연구자가 수행한 프로세스 사용
   - Remove duplicates:
     * `present.ipynb` 참조. 중복 제거된 것 없음.
   - Exclude data points:
     * Zero inflation: Remove if '0' populates more than 90% of the time series.
     * `present.ipynb` 참조. 제거된 시계열 없음.
   - Reducing Variables with PCA
-    * ...
+    * OP 데이터와 DX 데이터를 Date에 맞추어 합치면, 연구자가 주장한 87개의 시계열이 243 데이터 포인트를 가지고 있음. 
+    * Standardize를 수행한 후, PCA 실행하면, `0.7509950753342143 = 0.751 = 75.1%`의 explained variance를 보임.
+  - 전체 입력 변수 완성
+    * 과거 7일간 관측 변수 `7c`개
+    * 시간 관련 변수 추가 `3`개 (일, 월, 요일 변수)
+    * 환자 관련 정보 변수 `34`개. (PT에서 15개 변수 + 주성분 19개로 추정)
+    * 전체 개수는 `7c + (34 + 3)`... 그런데 분석 시계열에서 시계열 개수는 `56`개라고 하는데, `7c = 19`...?
+
 
 ### Step 3. Replicate Distance Calc
 
