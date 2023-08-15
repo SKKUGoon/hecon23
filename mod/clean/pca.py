@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from typing import List
+from typing import List, Dict
 
 
 def check_series_num(data: pd.DataFrame) -> int:
@@ -22,8 +22,10 @@ def prep_pca(data_ls: List[pd.DataFrame], time_frame: int) -> pd.DataFrame:
 
 
 def reduce_dim(data_ls: List[pd.DataFrame],
+               n_components: int = 19,
                standardize: bool = True,
-               time_frame: int = None):
+               time_frame: int = None,
+               debug: bool = False) -> Dict:
     """
     Concatenate all the dataframe in the `data_ls` by `concat_key`.
     Reduce the column space dimension using PCA.
@@ -38,6 +40,7 @@ def reduce_dim(data_ls: List[pd.DataFrame],
         time_frame = 215
 
     data = prep_pca(data_ls, time_frame)
+    data_dates = data.index
 
     # Step 1: Standarize the data
     scaler = None
@@ -46,16 +49,19 @@ def reduce_dim(data_ls: List[pd.DataFrame],
         data = scaler.fit_transform(data)
 
     # Step 2: Apply PCA
-    pca = PCA(n_components=19)
+    pca = PCA(n_components=n_components)
     x_pca = pca.fit_transform(data)
 
     # Convert the PCA result into a DataFrame
     df_pca = pd.DataFrame(
         x_pca,
-        columns=[f"PC{i+1}" for i in range(x_pca.shape[1])]
+        columns=[f"PC{i+1}" for i in range(x_pca.shape[1])],
     )
+    df_pca.index = data_dates  # Apply original index(dates)
 
-    print(df_pca.head(3))
+    if debug:
+        print("PCA successful")
+        print(df_pca.head(3))
 
     return {
         # Processing model class
@@ -66,13 +72,14 @@ def reduce_dim(data_ls: List[pd.DataFrame],
         "pc": df_pca,
 
         # Statistics
-        "explained_var": explained_var(pca),
+        "explained_var": explained_var(pca, debug=debug),
     }
 
 
-def explained_var(model: PCA):
+def explained_var(model: PCA, debug: bool):
     exp_var = model.explained_variance_ratio_
-    print(f"Explained Variance by each component: {exp_var}")
-    print(f"Total Explained Variance(for the selected components): {np.sum(exp_var)}")
+    if debug:
+        print(f"Explained Variance by each component: {exp_var}")
+        print(f"Total Explained Variance(for the selected components): {np.sum(exp_var)}")
     return exp_var
 
