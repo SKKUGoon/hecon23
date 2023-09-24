@@ -52,8 +52,6 @@ Original user's result should be
 
 [Link to Paper](https://dcollection.skku.edu/public_resource/pdf/000000172988_20230917161207.pdf)
 
-
-
 ## 연구 결과 복제 시도
 
 ### Step 0. Installation
