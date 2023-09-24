@@ -2,10 +2,25 @@
 # Function `sbd_proxy` uses C++ Code. Because of time issue - won't use it now.
 
 import numpy as np
-from scipy.stats import zscore
 
 from .ncc import ncc_calculation
 from .error import is_multivariate
+
+from typing import List
+
+
+def compute_zscore(data: list | np.ndarray):
+    if isinstance(data, List):
+        data = np.array(data)
+
+    mean = np.mean(data)
+    std = np.std(data)
+
+    if std == 0:
+        # Return an array of zeros if standard dev is 0
+        return np.zeros_like(data)
+
+    return (data - mean) / std
 
 
 def shape_based_distance(x: list | np.ndarray,
@@ -21,10 +36,10 @@ def shape_based_distance(x: list | np.ndarray,
     if len(x) > len(y):
         x, y = y, x
 
+    # If `project_override` is True, return with absolute value on numerator
     if z_norm:
-        # Return Z-score of a sequence (normalization process)
-        # If `project_override` is True, return with absolute value on numerator
-        cross_corr_sequence = ncc_calculation(zscore(x), zscore(y), project_override=project_override)
+        # Return Z-score of a sequence (normalization process)    
+        cross_corr_sequence = ncc_calculation(compute_zscore(x), compute_zscore(y), project_override=project_override)
     else:
         cross_corr_sequence = ncc_calculation(x, y, project_override=project_override)
 
@@ -48,5 +63,3 @@ def shape_based_distance(x: list | np.ndarray,
         yshift = yshift[:len(x)]
 
     return {"dist": 1 - m, "yshift": yshift}
-
-
