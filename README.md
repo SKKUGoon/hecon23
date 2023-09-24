@@ -48,20 +48,33 @@ Original user's result should be
   - Python ensures better performance than `R`.
   - Compatibility with `scikit-learn` package, `pytorch` 등 다양한 라이브러리 사용 가능.
 
+## 전임 연구자의 논문 경로
+
+[Link to Paper](https://dcollection.skku.edu/public_resource/pdf/000000172988_20230917161207.pdf)
+
+
+
 ## 연구 결과 복제 시도
 
 ### Step 0. Installation
 
-1. Git을 이용해서 해당 코드 및 데이터파일을 가지고 온다. `asset` 폴더 만든 후, EDI, 및 물류 csv 파일 삽입. 
-2. Python 설정 환경: `requirements.txt` 안의 pip 파일들 모두 설치 (`pyenv` 사용 권장)
+1. Python 설치. - 가상환경에서 구동하는 것을추천. (pyenv, pyenv-virtualenvs 활용)
+  - 추천 파이썬 버전: 3.10.0 (3.11.x에서 scipy 버그가 일어남)
+2. Git을 이용해서 해당 코드 및 데이터파일을 가지고 온다. `asset` 폴더 만든 후, EDI, 및 물류 csv 파일 삽입. 
+3. Python 설정 환경: `requirements.txt` 안의 pip 파일들 모두 설치 (`pyenv` 사용 권장)
    ```bash
    pip install -U scikit-learn
    pip install -r requirements.txt
    ```
-3. MySQL 설정 환경: `macOS`의 경우, `homebrew`를 이용하여 `mysql`설치. 윈도우의 경우, mysqlworkbench를 이용하여 설치 권장. 
+4. MySQL 설정 환경: `macOS`의 경우, `homebrew`를 이용하여 `mysql`설치. 윈도우의 경우, mysqlworkbench를 이용하여 설치 권장. 
    - 대부분의 data storage 및 processing 은 mysql을 이용하여 이루어질 것이기 때문에 필수. 
 
 ### Step 1. Preprocessing
+
+<b><종속변수></b>
+병동 카트장 사용량 데이터_20220804_12동.xlsx
+
+<b><외생변수></b>
 
 사용파일: `./data_lake.py`
 
